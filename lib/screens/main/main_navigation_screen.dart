@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../models/travel_group.dart';
 import '../../models/trip.dart';
+import '../../models/user_profile.dart';
 import '../auth/login_screen.dart';
 import '../groups/add_group_screen.dart';
 import '../groups/groups_screen.dart';
@@ -21,6 +22,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   int _selectedIndex = 0;
   final List<Trip> _trips = [];
   final List<TravelGroup> _groups = [];
+  UserProfile _profile = const UserProfile(
+    name: 'Alex Traveller',
+    email: 'demo@tripplan.com',
+  );
 
   Future<void> _addTrip() async {
     final trip = await Navigator.of(context).push<Trip>(
@@ -72,6 +77,8 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
       ProfileScreen(
         tripCount: _trips.length,
         groupCount: _groups.length,
+        profile: _profile,
+        onProfileChanged: (profile) => setState(() => _profile = profile),
         onLogout: _logout,
       ),
     ];

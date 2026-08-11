@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 
 import '../../core/theme/app_theme.dart';
+import '../../models/user_profile.dart';
+import 'edit_profile_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({
     required this.tripCount,
     required this.groupCount,
+    required this.profile,
+    required this.onProfileChanged,
     required this.onLogout,
     super.key,
   });
   final int tripCount;
   final int groupCount;
+  final UserProfile profile;
+  final ValueChanged<UserProfile> onProfileChanged;
   final VoidCallback onLogout;
 
   @override
@@ -26,13 +32,13 @@ class ProfileScreen extends StatelessWidget {
             ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w900),
           ),
           const SizedBox(height: 28),
-          const Align(
+          Align(
             child: CircleAvatar(
               radius: 52,
               backgroundColor: AppColors.sage,
               child: Text(
-                'A',
-                style: TextStyle(
+                profile.avatarInitial,
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 38,
                   fontWeight: FontWeight.w800,
@@ -41,14 +47,14 @@ class ProfileScreen extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 14),
-          const Text(
-            'Alex Traveller',
+          Text(
+            profile.name,
             textAlign: TextAlign.center,
             style: TextStyle(fontSize: 22, fontWeight: FontWeight.w900),
           ),
           const SizedBox(height: 4),
-          const Text(
-            'demo@tripplan.com',
+          Text(
+            profile.email,
             textAlign: TextAlign.center,
             style: TextStyle(color: AppColors.muted),
           ),
@@ -77,7 +83,7 @@ class ProfileScreen extends StatelessWidget {
                   leading: const Icon(Icons.edit_outlined),
                   title: const Text('Edit profile'),
                   trailing: const Icon(Icons.chevron_right),
-                  onTap: () => _comingSoon(context),
+                  onTap: () => _editProfile(context),
                 ),
                 const Divider(height: 1, indent: 56),
                 ListTile(
@@ -114,6 +120,18 @@ class ProfileScreen extends StatelessWidget {
   void _comingSoon(BuildContext context) => ScaffoldMessenger.of(
     context,
   ).showSnackBar(const SnackBar(content: Text('This feature is coming soon')));
+
+  Future<void> _editProfile(BuildContext context) async {
+    final updatedProfile = await Navigator.of(context).push<UserProfile>(
+      MaterialPageRoute(builder: (_) => EditProfileScreen(profile: profile)),
+    );
+    if (updatedProfile == null || !context.mounted) return;
+
+    onProfileChanged(updatedProfile);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Profile updated successfully')),
+    );
+  }
 
   Future<void> _confirmLogout(BuildContext context) async {
     final shouldLogout = await showDialog<bool>(
