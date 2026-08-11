@@ -1,17 +1,54 @@
-# flutter_application_1
+# Trip Plan App
 
-A new Flutter project.
+A Flutter starter application for trip planning and mobile app experimentation.
 
-## Getting Started
+## Project overview
 
-This project is a starting point for a Flutter application.
+This project is a Material Design Flutter application with the main app entry point in `lib/main.dart`.
 
-A few resources to get you started if this is your first Flutter project:
+## Repository structure
 
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
+- `lib/` - application source code
+- `test/` - widget and integration tests
+- `android/` - Android platform project
+- `ios/` - iOS platform project
+- `pubspec.yaml` - project dependencies and metadata
+- `analysis_options.yaml` - lint configuration
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Getting started
+
+Use FVM to ensure the correct Flutter SDK is installed and selected:
+
+```bash
+fvm install
+fvm use <version>
+```
+
+Then install dependencies and run the app:
+
+```bash
+fvm flutter pub get
+fvm flutter run
+```
+
+## Validation
+
+Run the project checks before finishing work:
+
+```bash
+fvm flutter analyze
+fvm flutter test
+```
+
+## Contributing
+
+- Keep changes small and focused.
+- Follow existing Flutter and Material Design conventions.
+- Avoid unnecessary package additions.
+- Do not modify generated platform files unless required.
+- Update tests when behavior changes.
+
+## Notes
+
+- This is a starter Flutter app and should remain simple and maintainable.
+- Generated build artifacts and local IDE files should not be committed.
