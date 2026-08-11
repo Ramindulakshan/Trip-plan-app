@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../models/notification_settings.dart';
 import '../../models/travel_group.dart';
 import '../../models/trip.dart';
 import '../../models/user_profile.dart';
@@ -22,6 +23,7 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   int _selectedIndex = 0;
   final List<Trip> _trips = [];
   final List<TravelGroup> _groups = [];
+  NotificationSettings _notificationSettings = const NotificationSettings();
   UserProfile _profile = const UserProfile(
     name: 'Alex Traveller',
     email: 'demo@tripplan.com',
@@ -78,7 +80,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
         tripCount: _trips.length,
         groupCount: _groups.length,
         profile: _profile,
+        notificationSettings: _notificationSettings,
         onProfileChanged: (profile) => setState(() => _profile = profile),
+        onNotificationSettingsChanged: (settings) =>
+            setState(() => _notificationSettings = settings),
         onLogout: _logout,
       ),
     ];
