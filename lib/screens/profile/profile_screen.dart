@@ -1,22 +1,28 @@
 import 'package:flutter/material.dart';
 
 import '../../core/theme/app_theme.dart';
+import '../../models/notification_settings.dart';
 import '../../models/user_profile.dart';
 import 'edit_profile_screen.dart';
+import 'notification_settings_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({
     required this.tripCount,
     required this.groupCount,
     required this.profile,
+    required this.notificationSettings,
     required this.onProfileChanged,
+    required this.onNotificationSettingsChanged,
     required this.onLogout,
     super.key,
   });
   final int tripCount;
   final int groupCount;
   final UserProfile profile;
+  final NotificationSettings notificationSettings;
   final ValueChanged<UserProfile> onProfileChanged;
+  final ValueChanged<NotificationSettings> onNotificationSettingsChanged;
   final VoidCallback onLogout;
 
   @override
@@ -90,7 +96,7 @@ class ProfileScreen extends StatelessWidget {
                   leading: const Icon(Icons.notifications_outlined),
                   title: const Text('Notifications'),
                   trailing: const Icon(Icons.chevron_right),
-                  onTap: () => _comingSoon(context),
+                  onTap: () => _editNotificationSettings(context),
                 ),
                 const Divider(height: 1, indent: 56),
                 ListTile(
@@ -117,10 +123,6 @@ class ProfileScreen extends StatelessWidget {
     );
   }
 
-  void _comingSoon(BuildContext context) => ScaffoldMessenger.of(
-    context,
-  ).showSnackBar(const SnackBar(content: Text('This feature is coming soon')));
-
   Future<void> _editProfile(BuildContext context) async {
     final updatedProfile = await Navigator.of(context).push<UserProfile>(
       MaterialPageRoute(builder: (_) => EditProfileScreen(profile: profile)),
@@ -130,6 +132,22 @@ class ProfileScreen extends StatelessWidget {
     onProfileChanged(updatedProfile);
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Profile updated successfully')),
+    );
+  }
+
+  Future<void> _editNotificationSettings(BuildContext context) async {
+    final updatedSettings = await Navigator.of(context)
+        .push<NotificationSettings>(
+          MaterialPageRoute(
+            builder: (_) =>
+                NotificationSettingsScreen(settings: notificationSettings),
+          ),
+        );
+    if (updatedSettings == null || !context.mounted) return;
+
+    onNotificationSettingsChanged(updatedSettings);
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Notification settings updated')),
     );
   }
 
